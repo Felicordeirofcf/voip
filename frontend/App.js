@@ -1,9 +1,7 @@
-// Estrutura base do frontend React para a plataforma VoIP
-
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
 // Componentes de autenticação
 import Login from './components/auth/Login';
@@ -21,25 +19,14 @@ import Settings from './components/settings/Settings';
 // Contexto de autenticação
 import { AuthProvider } from './contexts/AuthContext';
 
-// Tema da aplicação
 const theme = createTheme({
   palette: {
-    primary: {
-      main: '#1976d2',
-    },
-    secondary: {
-      main: '#dc004e',
-    },
-    background: {
-      default: '#f5f5f5',
-    },
+    primary: { main: '#1976d2' },
+    secondary: { main: '#dc004e' },
+    background: { default: '#f5f5f5' },
   },
   typography: {
-    fontFamily: [
-      'Roboto',
-      'Arial',
-      'sans-serif',
-    ].join(','),
+    fontFamily: ['Roboto', 'Arial', 'sans-serif'].join(','),
   },
 });
 
@@ -49,17 +36,17 @@ function App() {
       <CssBaseline />
       <AuthProvider>
         <Router>
-          <Switch>
-            <Route exact path="/login" component={Login} />
-            <PrivateRoute exact path="/" component={Dashboard} />
-            <PrivateRoute path="/accounts" component={Accounts} />
-            <PrivateRoute path="/extensions" component={Extensions} />
-            <PrivateRoute path="/trunks" component={Trunks} />
-            <PrivateRoute path="/monitoring" component={Monitoring} />
-            <PrivateRoute path="/reports" component={Reports} />
-            <PrivateRoute path="/settings" component={Settings} />
-            <Redirect to="/" />
-          </Switch>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+            <Route path="/accounts" element={<PrivateRoute><Accounts /></PrivateRoute>} />
+            <Route path="/extensions" element={<PrivateRoute><Extensions /></PrivateRoute>} />
+            <Route path="/trunks" element={<PrivateRoute><Trunks /></PrivateRoute>} />
+            <Route path="/monitoring" element={<PrivateRoute><Monitoring /></PrivateRoute>} />
+            <Route path="/reports" element={<PrivateRoute><Reports /></PrivateRoute>} />
+            <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
         </Router>
       </AuthProvider>
     </ThemeProvider>
