@@ -1,7 +1,5 @@
-// Componente Dashboard para o frontend da plataforma VoIP
-
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 import axios from 'axios';
 import {
   Grid,
@@ -14,72 +12,17 @@ import {
   ListItemText,
   Divider,
   CircularProgress,
-  Box,
-  makeStyles
-} from '@material-ui/core';
+  Box
+} from '@mui/material';
 import {
   Phone as PhoneIcon,
   Business as BusinessIcon,
   CallSplit as TrunkIcon,
   Warning as WarningIcon
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { Line } from 'react-chartjs-2';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing(2),
-    height: '100%',
-  },
-  title: {
-    marginBottom: theme.spacing(2),
-  },
-  card: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  cardContent: {
-    flexGrow: 1,
-  },
-  statValue: {
-    fontSize: '2rem',
-    fontWeight: 'bold',
-    marginTop: theme.spacing(1),
-  },
-  statLabel: {
-    color: theme.palette.text.secondary,
-  },
-  iconContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: theme.spacing(1),
-  },
-  icon: {
-    marginRight: theme.spacing(1),
-    color: theme.palette.primary.main,
-  },
-  warningIcon: {
-    color: theme.palette.warning.main,
-    marginRight: theme.spacing(1),
-  },
-  activityItem: {
-    borderLeft: `4px solid ${theme.palette.primary.main}`,
-    paddingLeft: theme.spacing(2),
-    marginBottom: theme.spacing(1),
-  },
-  loadingContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 200,
-  },
-}));
-
 function Dashboard() {
-  const classes = useStyles();
   const { currentUser, isSuperAdmin } = useAuth();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
@@ -148,37 +91,37 @@ function Dashboard() {
 
   if (loading) {
     return (
-      <Box className={classes.loadingContainer}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 200 }}>
         <CircularProgress />
       </Box>
     );
   }
 
   return (
-    <div className={classes.root}>
-      <Typography variant="h4" className={classes.title}>
+    <div style={{ flexGrow: 1 }}>
+      <Typography variant="h4" sx={{ marginBottom: 2 }}>
         Dashboard
       </Typography>
       
       <Grid container spacing={3}>
         {/* Estatísticas Gerais */}
         <Grid item xs={12} md={8}>
-          <Paper className={classes.paper}>
+          <Paper sx={{ padding: 2, height: '100%' }}>
             <Typography variant="h6" gutterBottom>
               Estatísticas Gerais
             </Typography>
             <Grid container spacing={3}>
-              {isSuperAdmin() && (
+              {isSuperAdmin && (
                 <Grid item xs={6} sm={3}>
-                  <Card className={classes.card}>
-                    <CardContent className={classes.cardContent}>
-                      <div className={classes.iconContainer}>
-                        <BusinessIcon className={classes.icon} />
-                        <Typography variant="subtitle2" className={classes.statLabel}>
+                  <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 1 }}>
+                        <BusinessIcon sx={{ marginRight: 1, color: 'primary.main' }} />
+                        <Typography variant="subtitle2" color="text.secondary">
                           Total Contas
                         </Typography>
-                      </div>
-                      <Typography variant="h4" className={classes.statValue}>
+                      </Box>
+                      <Typography variant="h4" sx={{ fontSize: '2rem', fontWeight: 'bold', marginTop: 1 }}>
                         {stats.accounts}
                       </Typography>
                     </CardContent>
@@ -187,15 +130,15 @@ function Dashboard() {
               )}
               
               <Grid item xs={6} sm={3}>
-                <Card className={classes.card}>
-                  <CardContent className={classes.cardContent}>
-                    <div className={classes.iconContainer}>
-                      <PhoneIcon className={classes.icon} />
-                      <Typography variant="subtitle2" className={classes.statLabel}>
+                <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 1 }}>
+                      <PhoneIcon sx={{ marginRight: 1, color: 'primary.main' }} />
+                      <Typography variant="subtitle2" color="text.secondary">
                         Total Ramais
                       </Typography>
-                    </div>
-                    <Typography variant="h4" className={classes.statValue}>
+                    </Box>
+                    <Typography variant="h4" sx={{ fontSize: '2rem', fontWeight: 'bold', marginTop: 1 }}>
                       {stats.extensions}
                     </Typography>
                   </CardContent>
@@ -203,15 +146,15 @@ function Dashboard() {
               </Grid>
               
               <Grid item xs={6} sm={3}>
-                <Card className={classes.card}>
-                  <CardContent className={classes.cardContent}>
-                    <div className={classes.iconContainer}>
-                      <PhoneIcon className={classes.icon} />
-                      <Typography variant="subtitle2" className={classes.statLabel}>
+                <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 1 }}>
+                      <PhoneIcon sx={{ marginRight: 1, color: 'primary.main' }} />
+                      <Typography variant="subtitle2" color="text.secondary">
                         Chamadas Hoje
                       </Typography>
-                    </div>
-                    <Typography variant="h4" className={classes.statValue}>
+                    </Box>
+                    <Typography variant="h4" sx={{ fontSize: '2rem', fontWeight: 'bold', marginTop: 1 }}>
                       {stats.callsToday}
                     </Typography>
                   </CardContent>
@@ -219,15 +162,15 @@ function Dashboard() {
               </Grid>
               
               <Grid item xs={6} sm={3}>
-                <Card className={classes.card}>
-                  <CardContent className={classes.cardContent}>
-                    <div className={classes.iconContainer}>
-                      <TrunkIcon className={classes.icon} />
-                      <Typography variant="subtitle2" className={classes.statLabel}>
+                <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 1 }}>
+                      <TrunkIcon sx={{ marginRight: 1, color: 'primary.main' }} />
+                      <Typography variant="subtitle2" color="text.secondary">
                         Troncos Ativos
                       </Typography>
-                    </div>
-                    <Typography variant="h4" className={classes.statValue}>
+                    </Box>
+                    <Typography variant="h4" sx={{ fontSize: '2rem', fontWeight: 'bold', marginTop: 1 }}>
                       {stats.trunks}
                     </Typography>
                   </CardContent>
@@ -239,14 +182,14 @@ function Dashboard() {
         
         {/* Atividade Recente */}
         <Grid item xs={12} md={4}>
-          <Paper className={classes.paper}>
+          <Paper sx={{ padding: 2, height: '100%' }}>
             <Typography variant="h6" gutterBottom>
               Atividade Recente
             </Typography>
             <List>
               {recentActivity.map((activity) => (
                 <React.Fragment key={activity.id}>
-                  <ListItem className={classes.activityItem}>
+                  <ListItem sx={{ borderLeft: '4px solid', borderColor: 'primary.main', paddingLeft: 2, marginBottom: 1 }}>
                     <ListItemText
                       primary={activity.message}
                       secondary={activity.timestamp}
@@ -261,14 +204,14 @@ function Dashboard() {
         
         {/* Gráfico de Utilização */}
         <Grid item xs={12}>
-          <Paper className={classes.paper}>
+          <Paper sx={{ padding: 2, height: '100%' }}>
             <Typography variant="h6" gutterBottom>
               Gráfico de Utilização
             </Typography>
             {chartData ? (
               <Line data={chartData} options={{ responsive: true, maintainAspectRatio: false, height: 300 }} />
             ) : (
-              <Box className={classes.loadingContainer}>
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 200 }}>
                 <CircularProgress />
               </Box>
             )}

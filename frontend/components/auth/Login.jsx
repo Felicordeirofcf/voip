@@ -1,8 +1,6 @@
-// Componente de Login para o frontend da plataforma VoIP
-
 import React, { useState } from 'react';
-import { useHistory, Redirect } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate, Navigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 import {
   Container,
   Paper,
@@ -12,47 +10,21 @@ import {
   CircularProgress,
   Box,
   Snackbar,
-  makeStyles
-} from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    padding: theme.spacing(4),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  logo: {
-    margin: theme.spacing(2),
-    width: '100%',
-    maxWidth: 200,
-  },
-  form: {
-    width: '100%',
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-  loading: {
-    marginRight: theme.spacing(1),
-  },
-}));
+  Alert
+} from '@mui/material';
 
 function Login() {
-  const classes = useStyles();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showError, setShowError] = useState(false);
   const { login, currentUser, error } = useAuth();
-  const history = useHistory();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Se o usuário já estiver autenticado, redirecionar para o dashboard
   if (currentUser) {
-    return <Redirect to="/" />;
+    return <Navigate to="/" />;
   }
 
   const handleSubmit = async (e) => {
@@ -67,7 +39,8 @@ function Login() {
     try {
       const success = await login(username, password);
       if (success) {
-        history.push('/');
+        const from = location.state?.from?.pathname || '/';
+        navigate(from);
       } else {
         setShowError(true);
       }
@@ -85,7 +58,13 @@ function Login() {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Paper className={classes.paper} elevation={3}>
+      <Paper sx={{ 
+        marginTop: 8, 
+        padding: 4, 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center' 
+      }} elevation={3}>
         <Typography component="h1" variant="h5">
           Plataforma VoIP
         </Typography>
@@ -95,7 +74,7 @@ function Login() {
           </Typography>
         </Box>
         
-        <form className={classes.form} onSubmit={handleSubmit}>
+        <Box component="form" sx={{ width: '100%', mt: 1 }} onSubmit={handleSubmit}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -129,19 +108,19 @@ function Login() {
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}
+            sx={{ mt: 3, mb: 2 }}
             disabled={isSubmitting}
           >
             {isSubmitting ? (
               <>
-                <CircularProgress size={24} className={classes.loading} />
+                <CircularProgress size={24} sx={{ mr: 1 }} />
                 Entrando...
               </>
             ) : (
               'Entrar'
             )}
           </Button>
-        </form>
+        </Box>
       </Paper>
       
       <Snackbar open={showError && !!error} autoHideDuration={6000} onClose={handleCloseError}>

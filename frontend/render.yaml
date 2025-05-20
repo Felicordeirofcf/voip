@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: voip-frontend
+    env: static
+    buildCommand: |
+      chmod +x node_modules/.bin/vite
+      npm run build
+    staticPublishPath: dist

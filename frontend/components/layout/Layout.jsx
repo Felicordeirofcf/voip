@@ -1,13 +1,10 @@
-// Componente de Layout principal para o frontend da plataforma VoIP
-
 import React, { useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 import {
   AppBar,
   CssBaseline,
   Drawer,
-  Hidden,
   IconButton,
   List,
   ListItem,
@@ -19,9 +16,8 @@ import {
   Menu,
   MenuItem,
   Avatar,
-  Box,
-  makeStyles
-} from '@material-ui/core';
+  Box
+} from '@mui/material';
 import {
   Menu as MenuIcon,
   Dashboard as DashboardIcon,
@@ -33,66 +29,13 @@ import {
   Settings as SettingsIcon,
   ExitToApp as LogoutIcon,
   AccountCircle
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  drawer: {
-    [theme.breakpoints.up('md')]: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-  },
-  appBar: {
-    [theme.breakpoints.up('md')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth,
-    },
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-  },
-  toolbar: theme.mixins.toolbar,
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  },
-  title: {
-    flexGrow: 1,
-  },
-  avatar: {
-    cursor: 'pointer',
-    backgroundColor: theme.palette.primary.main,
-  },
-  userInfo: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  userName: {
-    marginTop: theme.spacing(1),
-  },
-  userRole: {
-    fontSize: '0.8rem',
-    color: theme.palette.text.secondary,
-  },
-}));
-
 function Layout({ children }) {
-  const classes = useStyles();
   const { currentUser, logout, isSuperAdmin } = useAuth();
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -112,16 +55,16 @@ function Layout({ children }) {
   const handleLogout = () => {
     handleClose();
     logout();
-    history.push('/login');
+    navigate('/login');
   };
 
   const handleProfile = () => {
     handleClose();
-    history.push('/settings');
+    navigate('/settings');
   };
 
   const navigateTo = (path) => {
-    history.push(path);
+    navigate(path);
     setMobileOpen(false);
   };
 
@@ -138,22 +81,30 @@ function Layout({ children }) {
 
   const drawer = (
     <div>
-      <div className={classes.userInfo}>
-        <Avatar className={classes.avatar}>
+      <Box sx={{ 
+        padding: 2, 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center' 
+      }}>
+        <Avatar sx={{ 
+          cursor: 'pointer', 
+          bgcolor: 'primary.main' 
+        }}>
           {currentUser?.first_name?.charAt(0) || currentUser?.username?.charAt(0) || 'U'}
         </Avatar>
-        <Typography className={classes.userName} variant="subtitle1">
+        <Typography sx={{ marginTop: 1 }} variant="subtitle1">
           {currentUser?.first_name ? `${currentUser.first_name} ${currentUser.last_name}` : currentUser?.username}
         </Typography>
-        <Typography className={classes.userRole} variant="body2">
-          {isSuperAdmin() ? 'Super Administrador' : 'Administrador'}
+        <Typography sx={{ fontSize: '0.8rem', color: 'text.secondary' }} variant="body2">
+          {isSuperAdmin ? 'Super Administrador' : 'Administrador'}
         </Typography>
-      </div>
+      </Box>
       <Divider />
       <List>
         {menuItems.map((item) => {
           // Não mostrar itens marcados como adminOnly para não-admins
-          if (item.adminOnly && !isSuperAdmin()) {
+          if (item.adminOnly && !isSuperAdmin) {
             return null;
           }
           
@@ -181,20 +132,29 @@ function Layout({ children }) {
   );
 
   return (
-    <div className={classes.root}>
+    <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
+      <AppBar 
+        position="fixed" 
+        sx={{ 
+          width: { md: `calc(100% - ${drawerWidth}px)` },
+          ml: { md: `${drawerWidth}px` },
+        }}
+      >
         <Toolbar>
           <IconButton
             color="inherit"
             aria-label="abrir menu"
             edge="start"
             onClick={handleDrawerToggle}
-            className={classes.menuButton}
+            sx={{ 
+              marginRight: 2, 
+              display: { md: 'none' } 
+            }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
             Plataforma VoIP
           </Typography>
           <div>
@@ -228,39 +188,56 @@ function Layout({ children }) {
           </div>
         </Toolbar>
       </AppBar>
-      <nav className={classes.drawer}>
-        <Hidden mdUp implementation="css">
-          <Drawer
-            variant="temporary"
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true, // Melhor desempenho em dispositivos móveis
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden smDown implementation="css">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant="permanent"
-            open
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-      </nav>
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
+      <Box
+        component="nav"
+        sx={{ 
+          width: { md: drawerWidth }, 
+          flexShrink: { md: 0 } 
+        }}
+      >
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          sx={{
+            display: { xs: 'block', md: 'none' },
+            '& .MuiDrawer-paper': { 
+              boxSizing: 'border-box', 
+              width: drawerWidth 
+            },
+          }}
+          ModalProps={{
+            keepMounted: true, // Melhor desempenho em dispositivos móveis
+          }}
+        >
+          {drawer}
+        </Drawer>
+        <Drawer
+          variant="permanent"
+          sx={{
+            display: { xs: 'none', md: 'block' },
+            '& .MuiDrawer-paper': { 
+              boxSizing: 'border-box', 
+              width: drawerWidth 
+            },
+          }}
+          open
+        >
+          {drawer}
+        </Drawer>
+      </Box>
+      <Box
+        component="main"
+        sx={{ 
+          flexGrow: 1, 
+          padding: 3,
+          width: { md: `calc(100% - ${drawerWidth}px)` } 
+        }}
+      >
+        <Toolbar />
         {children}
-      </main>
-    </div>
+      </Box>
+    </Box>
   );
 }
 
