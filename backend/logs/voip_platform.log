@@ -1,0 +1,11 @@
+INFO 2025-05-20 15:53:40,545 autoreload Watching for file changes with StatReloader
+WARNING 2025-05-20 15:53:44,449 log Not Found: /
+WARNING 2025-05-20 15:53:44,450 basehttp "GET / HTTP/1.1" 404 3993
+WARNING 2025-05-20 15:53:44,551 log Not Found: /favicon.ico
+WARNING 2025-05-20 15:53:44,552 basehttp "GET /favicon.ico HTTP/1.1" 404 4044
+WARNING 2025-05-20 15:55:03,241 log Not Found: /
+WARNING 2025-05-20 15:55:03,242 basehttp "GET / HTTP/1.1" 404 3993
+WARNING 2025-05-20 15:55:03,406 log Not Found: /favicon.ico
+WARNING 2025-05-20 15:55:03,407 basehttp "GET /favicon.ico HTTP/1.1" 404 4044
+WARNING 2025-05-20 15:56:24,202 log Not Found: /
+WARNING 2025-05-20 15:56:24,204 basehttp "GET / HTTP/1.1" 404 3993
