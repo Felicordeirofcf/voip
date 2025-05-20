@@ -1,24 +1,31 @@
-"""
-Views para a API principal da plataforma VoIP.
-"""
-from rest_framework.views import APIView
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from rest_framework.reverse import reverse
+from rest_framework.permissions import AllowAny
 from rest_framework import status
 
-class ApiRootView(APIView):
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def api_root(request):
     """
-    Visão raiz da API que fornece links para os principais endpoints.
+    View para a raiz da API, retorna informações básicas sobre a API
     """
-    def get(self, request, format=None):
-        return Response({
-            'accounts': reverse('api-root', request=request, format=format) + 'accounts/',
-            'extensions': reverse('api-root', request=request, format=format) + 'extensions/',
-            'trunks': reverse('api-root', request=request, format=format) + 'trunks/',
-            'monitoring': reverse('api-root', request=request, format=format) + 'monitoring/',
-            'auth': {
-                'token': reverse('token_obtain_pair', request=request, format=format),
-                'token_refresh': reverse('token_refresh', request=request, format=format),
-                'token_verify': reverse('token_verify', request=request, format=format),
-            }
-        })
+    return Response({
+        'status': 'online',
+        'message': 'VoIP Platform API está funcionando corretamente',
+        'version': 'v1.0',
+        'documentation': {
+            'swagger': '/swagger/',
+            'redoc': '/redoc/'
+        }
+    }, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def api_status(request):
+    """
+    View para verificar o status da API
+    """
+    return Response({
+        'status': 'online',
+        'message': 'API está funcionando normalmente'
+    }, status=status.HTTP_200_OK)
