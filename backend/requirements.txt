@@ -1,0 +1,25 @@
+# Django e Django REST Framework
+django==3.2.20
+djangorestframework==3.14.0
+djangorestframework-simplejwt==5.2.2
+
+# Banco de Dados
+psycopg2-binary==2.9.6
+dj-database-url==2.0.0
+
+# Utilitários
+python-dotenv==1.0.0
+django-cors-headers==4.0.0
+django-filter==23.2
+Pillow==9.5.0
+
+# Documentação
+drf-yasg==1.21.5
+
+# Produção
+gunicorn==20.1.0
+whitenoise==6.4.0
+
+# Testes
+pytest==7.3.1
+pytest-django==4.5.2
