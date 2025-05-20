@@ -1,6 +1,3 @@
-"""
-Django settings for voip_core project.
-"""
 
 from pathlib import Path
 import os

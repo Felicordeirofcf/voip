@@ -385,3 +385,33 @@ docker-compose ps
 ## Conclusão
 
 Seguindo este guia, você terá a Plataforma VoIP completamente implantada em um ambiente de produção. Para qualquer dúvida ou problema durante o processo de implantação, consulte a documentação técnica ou entre em contato com o suporte.
+
+
+
+
+Connections
+Hostname
+An internal hostname used by your Render services.
+
+dpg-d0mbjpruibrs73eimsg0-a
+
+Port
+5432
+
+Database
+voip_platform_db
+
+Username
+voip_platform_db_user
+
+
+
+
+Password
+JT3W3nPstxHC5U3d4nXncxCnX8zWGgXV
+Internal Database URL
+postgresql://voip_platform_db_user:JT3W3nPstxHC5U3d4nXncxCnX8zWGgXV@dpg-d0mbjpruibrs73eimsg0-a/voip_platform_db
+External Database URL
+postgresql://voip_platform_db_user:JT3W3nPstxHC5U3d4nXncxCnX8zWGgXV@dpg-d0mbjpruibrs73eimsg0-a.oregon-postgres.render.com/voip_platform_db
+PSQL Command
+PGPASSWORD=JT3W3nPstxHC5U3d4nXncxCnX8zWGgXV psql -h dpg-d0mbjpruibrs73eimsg0-a.oregon-postgres.render.com -U voip_platform_db_user voip_platform_db
