@@ -1,7 +1,7 @@
 // Contexto de autenticação para o frontend da plataforma VoIP
 
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import api from '../services/api'; // <-- Substitui axios por API configurada com baseURL do backend
 
 // Criação do contexto de autenticação
 const AuthContext = createContext();
@@ -18,12 +18,10 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Configurar o axios para incluir o token em todas as requisições
+  // Persistir token localmente
   useEffect(() => {
     if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    } else {
-      delete axios.defaults.headers.common['Authorization'];
+      localStorage.setItem('token', token);
     }
   }, [token]);
 
@@ -36,8 +34,7 @@ export function AuthProvider({ children }) {
       }
 
       try {
-        // Verificar token e obter dados do usuário
-        const response = await axios.get('/api/accounts/users/me/');
+        const response = await api.get('/api/accounts/users/me/');
         setCurrentUser(response.data);
         setError('');
       } catch (error) {
@@ -55,23 +52,22 @@ export function AuthProvider({ children }) {
   // Função de login
   async function login(username, password) {
     try {
-      const response = await axios.post('/api/token/', {
+      const response = await api.post('/api/token/', {
         username,
         password
       });
 
       const { access, refresh } = response.data;
-      
+
       // Salvar tokens
       localStorage.setItem('token', access);
       localStorage.setItem('refreshToken', refresh);
-      
       setToken(access);
-      
+
       // Obter dados do usuário
-      const userResponse = await axios.get('/api/accounts/users/me/');
+      const userResponse = await api.get('/api/accounts/users/me/');
       setCurrentUser(userResponse.data);
-      
+
       setError('');
       return true;
     } catch (error) {
@@ -92,21 +88,21 @@ export function AuthProvider({ children }) {
   // Função para atualizar o token
   async function refreshToken() {
     const refreshToken = localStorage.getItem('refreshToken');
-    
+
     if (!refreshToken) {
       logout();
       return false;
     }
 
     try {
-      const response = await axios.post('/api/token/refresh/', {
+      const response = await api.post('/api/token/refresh/', {
         refresh: refreshToken
       });
 
       const { access } = response.data;
       localStorage.setItem('token', access);
       setToken(access);
-      
+
       return true;
     } catch (error) {
       console.error('Erro ao atualizar token:', error);
@@ -122,8 +118,6 @@ export function AuthProvider({ children }) {
 
   // Verificar se o usuário é Admin de alguma conta
   function isAccountAdmin() {
-    // Esta função precisaria verificar as contas do usuário
-    // Em uma implementação real, isso viria dos dados do usuário
     return currentUser?.account_memberships?.some(membership => membership.role === 'admin');
   }
 
