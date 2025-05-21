@@ -2,7 +2,7 @@
   "name": "voip-frontend",
   "version": "1.0.0",
   "engines": {
-    "node": ">=16 <20"
+    "node": ">=16"
   },
   "scripts": {
     "dev": "vite",

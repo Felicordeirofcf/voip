@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext.jsx';
+import { useAuth } from '../../src/contexts/AuthContext.jsx';
 import Layout from '../layout/Layout.jsx';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';

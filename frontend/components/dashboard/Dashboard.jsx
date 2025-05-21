@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../contexts/AuthContext.jsx';
+import { useAuth } from '../../src/contexts/AuthContext.jsx';
 import axios from 'axios';
 import {
   Grid,

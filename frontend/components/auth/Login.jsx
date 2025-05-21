@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext.jsx';
+import { useAuth } from '../../src/contexts/AuthContext.jsx';
 import {
   Container,
   Paper,

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext.jsx';
+import { useAuth } from '../../src/contexts/AuthContext.jsx';
 import {
   AppBar,
   CssBaseline,
