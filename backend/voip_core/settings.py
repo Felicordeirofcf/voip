@@ -152,6 +152,7 @@ SIMPLE_JWT = {
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
     "https://voip-platform-frontend.onrender.com",
+    "https://voip-pi.vercel.app",
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]
