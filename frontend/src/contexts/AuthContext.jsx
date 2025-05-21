@@ -52,9 +52,19 @@ export function AuthProvider({ children }) {
   // Função de login
   async function login(username, password) {
     try {
-      const response = await api.post('/api/token/', {
-        username,
-        password
+      // Garantir que o formato da requisição seja exatamente o que o backend espera
+      const loginData = {
+        username: username.trim(),
+        password: password
+      };
+      
+      console.log('Enviando requisição de login:', loginData);
+      
+      const response = await api.post('/api/token/', loginData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
       });
 
       const { access, refresh } = response.data;
